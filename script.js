@@ -6,14 +6,14 @@ let velocidade = 3; // quanto o inimigo anda
 let velocidadeobstaculo = 1; // muda nada
 let gameOver = false;
 
-let pontuacao = 0; // Variável para a pontuação
+let pontuacao = 0; 
 
 document.addEventListener('keypress', (evento) => {
     if (evento.code == "Space") {
         if (gameOver) {
-            reiniciarJogo(); // Chama a função para reiniciar o jogo
+            reiniciarJogo(); 
         } else {
-            personagem.velocidade_y = 15; // quantidade que ele pula
+            personagem.velocidade_y = 15;
             personagem.pulando = true;
         }
         personagem.velocidade_x = 0;
@@ -29,8 +29,10 @@ let personagem = {
     velocidade_y: 0,
     velocidade_x: 0,
     pulando: false,
-    andando: false
+    andando: false,
+    imagem: new Image()
 };
+personagem.imagem.src='./personagem.webp' 
 
 let Obstaculo = {
     x: 550,
@@ -39,30 +41,37 @@ let Obstaculo = {
     altura: 100
 };
 
-// Novo objeto que fica no topo
+
 let objetoSuperior = {
-    x: canvas.width, // Começa na borda direita
-    y: 50, // Fica no topo
+    x: canvas.width, 
+    y: 50, 
     largura: 120,
     altura: 50
 };
 
-// Novo objeto que fica no meio
+
 let objetoMeio = {
     x: canvas.width / 2 -70,
-    y: canvas.height / 2 - 10, // Fica no meio verticalmente
+    y: canvas.height / 2 - 10,
     largura: 90,
     altura: 70
 };
 
 function desenharPersonagem() {
-    ctx.fillStyle = 'red';
+    ctx.drawImage(
+        personagem.imagem,
+        personagem.x,
+        personagem.y,
+        personagem.largura,
+        personagem.altura)
+    
+/*    ctx.fillStyle = 'red';
     ctx.fillRect(
         personagem.x,
         personagem.y,
         personagem.largura,
-        personagem.altura
-    );
+        personagem.altura)
+        */
 }
 
 function atualizarPersonagem() {
@@ -92,7 +101,7 @@ function desenharObstaculo() {
 }
 
 function desenharObjetoSuperior() {
-    ctx.fillStyle = "blue"; // Definindo cor para o novo objeto
+    ctx.fillStyle = "blue"; 
     ctx.fillRect(
         objetoSuperior.x,
         objetoSuperior.y,
@@ -101,9 +110,8 @@ function desenharObjetoSuperior() {
     );
 }
 
-// Função para desenhar o novo objeto no meio
 function desenharObjetoMeio() {
-    ctx.fillStyle = "green"; // Definindo cor para o novo objeto
+    ctx.fillStyle = "green";
     ctx.fillRect(
         objetoMeio.x,
         objetoMeio.y,
@@ -121,24 +129,22 @@ function atualizarObstaculo() {
 }
 
 function atualizarObjetoSuperior() {
-    objetoSuperior.x -= velocidade; // Move o objeto da direita para a esquerda
+    objetoSuperior.x -= velocidade;
 
     if (objetoSuperior.x <= -50) {
-        objetoSuperior.x = canvas.width; // Reseta para a borda direita
+        objetoSuperior.x = canvas.width; 
     }
 }
 
-// Função para atualizar o objeto no meio
 function atualizarObjetoMeio() {
-    objetoMeio.x -= velocidade; // Move o objeto da direita para a esquerda
+    objetoMeio.x -= velocidade; 
 
     if (objetoMeio.x <= -50) {
-        objetoMeio.x = canvas.width; // Reseta para a borda direita
+        objetoMeio.x = canvas.width;
     }
 }
 
 function verificaColisao() {
-    // Verifica colisão com o obstáculo
     if (
         Obstaculo.x < personagem.x + personagem.largura &&
         Obstaculo.largura + Obstaculo.x > personagem.x &&
@@ -184,23 +190,20 @@ function verificaColisao() {
     }
 }
 
-// Função para aumentar a pontuação a cada 1 segundo
 setInterval(() => {
     if (!gameOver) {
-        pontuacao += 1; // Aumenta 1 ponto a cada 50ms
+        pontuacao += 1; 
     }
 }, 50);
 
-// Função para desenhar a pontuação na tela
 function desenharPontuacao() {
     ctx.fillStyle = "black";
     ctx.font = '20px Arial';
     ctx.fillText('Pontos: ' + pontuacao, 10, 30);
 }
 
-// Função para reiniciar o jogo
 function reiniciarJogo() {
-    // Resetando variáveis
+
     pontuacao = 0;
     personagem.x = 100;
     personagem.y = canvas.height - 50;
@@ -208,11 +211,10 @@ function reiniciarJogo() {
     personagem.velocidade_x = 0;
     Obstaculo.x = 550;
     Obstaculo.y = canvas.height - 100;
-    objetoSuperior.x = canvas.width; // Reseta o objeto superior para a direita
-    objetoMeio.x = canvas.width; // Reseta o objeto no meio para a direita
+    objetoSuperior.x = canvas.width;
+    objetoMeio.x = canvas.width;
     gameOver = false;
 
-    // Reiniciando o loop
     loop();
 }
 
@@ -225,10 +227,10 @@ function loop() {
         atualizarObstaculo();
         desenharObjetoSuperior();
         atualizarObjetoSuperior();
-        desenharObjetoMeio(); // Desenha o novo objeto no meio
-        atualizarObjetoMeio(); // Atualiza o movimento do objeto no meio
+        desenharObjetoMeio(); 
+        atualizarObjetoMeio();
         verificaColisao();
-        desenharPontuacao(); // Chama a função para desenhar a pontuação
+        desenharPontuacao(); 
         requestAnimationFrame(loop);
     }
 }
