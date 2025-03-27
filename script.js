@@ -32,7 +32,7 @@ let personagem = {
     andando: false,
     imagem: new Image()
 };
-personagem.imagem.src='./personagem.webp' 
+personagem.imagem.src='./static/personagem.webp' 
 
 let Obstaculo = {
     x: 550,
